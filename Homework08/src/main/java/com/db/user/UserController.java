@@ -35,9 +35,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUsersById(@PathVariable int id) throws InvalidUserException {
+    public User getUsersById(@PathVariable("id") Integer id) throws InvalidUserException {
         return userRepository.findById(id)
-                .orElseThrow(() -> new InvalidUserException("The user does not exist!"));
+                .orElseThrow(() -> new InvalidUserException("The user you're looking for does not exist!"));
     }
 
     @GetMapping("/search")
@@ -45,7 +45,7 @@ public class UserController {
         return userRepository.findByFirstName(name);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/accounts/{userId}")
     public List<Account> getAccountsByUserId(@PathVariable int userId) throws InvalidUserException {
         if (!userRepository.existsById(userId)) {
             throw new InvalidUserException("The user does not exist");
@@ -83,7 +83,7 @@ public class UserController {
     }
 
     //The number of users whose first name contains an ‘a’ (both lower and upper)
-    @GetMapping("/a")
+    @GetMapping("/containsA")
     public long containsA() {
         List<User> users = (List<User>) userRepository.findAll();
         return users.stream().filter(UserService::checkUser).count();

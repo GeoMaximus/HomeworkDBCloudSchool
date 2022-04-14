@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class UserExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler({ExistingAccountException.class})
+    @ExceptionHandler({ExistingAccountException.class, UserConflictException.class})
     public ResponseEntity<?> handleExistingAccountException(Exception ex) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMessage(ex.getMessage());
@@ -24,13 +24,6 @@ public class UserExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMessage(ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler({UserConflictException.class})
-    public ResponseEntity<?> handleUserConflictException(Exception ex) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setErrorMessage(ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 }
 
