@@ -1,6 +1,5 @@
-package com.db.repositories;
+package com.db.account;
 
-import com.db.models.Account;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

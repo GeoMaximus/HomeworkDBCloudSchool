@@ -1,13 +1,8 @@
-package com.db.controllers;
+package com.db.account;
 
-import com.db.exceptions.ExistingAccountException;
-import com.db.exceptions.InvalidUserException;
-import com.db.models.Account;
-import com.db.models.Currency;
-import com.db.models.User;
-import com.db.repositories.AccountRepository;
-import com.db.repositories.UserRepository;
-import com.db.services.AccountService;
+import com.db.config.exceptions.ExistingAccountException;
+import com.db.config.exceptions.InvalidUserException;
+import com.db.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.db.exceptions;
+package com.db.config.exceptions;
 
 public class InvalidUserException extends Exception {
 

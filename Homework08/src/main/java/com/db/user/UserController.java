@@ -1,9 +1,6 @@
-package com.db.controllers;
+package com.db.user;
 
-import com.db.exceptions.InvalidUserException;
-import com.db.models.User;
-import com.db.repositories.UserRepository;
-import com.db.services.UserService;
+import com.db.config.exceptions.InvalidUserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

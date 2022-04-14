@@ -1,6 +1,5 @@
-package com.db.services;
+package com.db.account;
 
-import com.db.models.Account;
 import org.springframework.stereotype.Service;
 
 @Service
