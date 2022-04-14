@@ -36,13 +36,4 @@ public class AccountController {
             return new ResponseEntity<>(account, HttpStatus.CREATED);
         }
     }
-
-    @GetMapping("/{userId}")
-    public List<Account> getAccountsByUserId(@PathVariable int userId) throws InvalidUserException {
-        if (!userRepository.existsById(userId)) {
-            throw new InvalidUserException("The user does not exist");
-        } else {
-            return new ArrayList<>(accountRepository.findByUserId(userId));
-        }
-    }
 }

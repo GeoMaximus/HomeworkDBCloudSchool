@@ -2,6 +2,7 @@ package com.db.config;
 
 import com.db.config.exceptions.ExistingAccountException;
 import com.db.config.exceptions.InvalidUserException;
+import com.db.config.exceptions.UserConflictException;
 import com.db.config.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,13 @@ public class UserExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMessage(ex.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({UserConflictException.class})
+    public ResponseEntity<?> handleUserConflictException(Exception ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage(ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 }
 

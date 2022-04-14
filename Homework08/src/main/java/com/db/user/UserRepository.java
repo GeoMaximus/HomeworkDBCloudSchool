@@ -11,4 +11,8 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, Integer> {
     @Query(value = "SELECT * FROM users WHERE first_name like %?1%", nativeQuery = true)
     List<User> findByFirstName(String name);
+
+//    boolean existsByFirstname(String firstname);
+//
+//    boolean existByLastname(String lastname);
 }

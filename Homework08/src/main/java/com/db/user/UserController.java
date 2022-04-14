@@ -1,9 +1,13 @@
 package com.db.user;
 
+import com.db.account.Account;
+import com.db.account.AccountRepository;
 import com.db.config.exceptions.InvalidUserException;
+import com.db.config.exceptions.UserConflictException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,8 +20,17 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("create")
-    public void createUser(@RequestBody User user) {
+    @Autowired
+    AccountRepository accountRepository;
+
+    @PostMapping()
+    public void createUser(@RequestBody User user) throws InvalidUserException, UserConflictException {
+        if (!userService.isUserValid(user)) {
+            throw new InvalidUserException("User details are not valid");
+        }
+//        if (userRepository.existsByFirstname(user.getFirstName()) && userRepository.existByLastname(user.getLastName())) {
+//            throw new UserConflictException("Another user with the same name already exists");
+//        }
         userRepository.save(user);
     }
 
@@ -30,6 +43,15 @@ public class UserController {
     @GetMapping("/search")
     public List<User> searchUserByFirstName(@RequestParam String name) {
         return userRepository.findByFirstName(name);
+    }
+
+    @GetMapping("/{userId}")
+    public List<Account> getAccountsByUserId(@PathVariable int userId) throws InvalidUserException {
+        if (!userRepository.existsById(userId)) {
+            throw new InvalidUserException("The user does not exist");
+        } else {
+            return new ArrayList<>(accountRepository.findByUserId(userId));
+        }
     }
 
     //returns a list with the initials of all users
