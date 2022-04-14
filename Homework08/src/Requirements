@@ -1,0 +1,9 @@
+Homework:
+
+Add to the previous assignment, solve all the following tasks USING STREAMS on a separate business layer!
+The results will be accessible from a client through GET requests.
+1. All users’ initials (George Popescu -> GP)
+2. Number of users that signed up with gmail (email ends with @gmail.[something])
+3. List of each last name that any user has (no duplicates)
+4. A string that contains every user’s first name initial
+5. The number of users whose first name contains an ‘a’ (upper case or lower case) and are under 20 years old
