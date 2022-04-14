@@ -17,4 +17,8 @@ public class UserService {
         } else
             return user.getFirstName().substring(0, 1);
     }
+
+    public static boolean checkUser(User user) {
+        return (user.getFirstName().contains("a") || user.getFirstName().contains("A")) && user.getAge() < 20;
+    }
 }

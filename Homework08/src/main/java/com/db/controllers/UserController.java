@@ -66,11 +66,11 @@ public class UserController {
         return null;
     }
 
-    //The number of users whose first name contains an ‘a’
+    //The number of users whose first name contains an ‘a’ (both lower and upper)
     @GetMapping("/a")
     public long containsA() {
         List<User> users = (List<User>) userRepository.findAll();
-        return users.stream().filter(user -> user.getFirstName().contains("a") && user.getAge() < 20).count();
+        return users.stream().filter(UserService::checkUser).count();
     }
 
 }
