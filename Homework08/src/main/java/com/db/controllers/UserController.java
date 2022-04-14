@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -62,8 +63,7 @@ public class UserController {
     @GetMapping("/everyInitial")
     public String getFirstNameInitials() {
         List<User> users = (List<User>) userRepository.findAll();
-
-        return null;
+       return users.stream().map(user -> user.getFirstName().substring(0,1)).reduce((str1, str2) -> str1 + str2).orElse("");
     }
 
     //The number of users whose first name contains an ‘a’ (both lower and upper)

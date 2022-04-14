@@ -21,4 +21,8 @@ public class UserService {
     public static boolean checkUser(User user) {
         return (user.getFirstName().contains("a") || user.getFirstName().contains("A")) && user.getAge() < 20;
     }
+
+    public static String firstNameInitial(User user) {
+        return user.getFirstName().substring(0, 1);
+    }
 }
