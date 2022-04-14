@@ -7,10 +7,7 @@ import com.db.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -42,7 +39,7 @@ public class UserController {
     @GetMapping("/initials")
     public List<String> getInitials() {
         List<User> users = (List<User>) userRepository.findAll();
-        return users.stream().map(UserService::getInitials).collect(Collectors.toList());
+        return users.stream().map(UserService::getAllInitials).collect(Collectors.toList());
     }
 
     //Number of users that signed up with gmail
@@ -63,7 +60,7 @@ public class UserController {
     @GetMapping("/everyInitial")
     public String getFirstNameInitials() {
         List<User> users = (List<User>) userRepository.findAll();
-       return users.stream().map(user -> user.getFirstName().substring(0,1)).reduce((str1, str2) -> str1 + str2).orElse("");
+        return users.stream().map(user -> user.getFirstName().substring(0, 1)).reduce((str1, str2) -> str1 + str2).orElse("");
     }
 
     //The number of users whose first name contains an ‘a’ (both lower and upper)
