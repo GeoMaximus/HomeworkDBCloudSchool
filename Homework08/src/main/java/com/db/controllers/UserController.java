@@ -37,11 +37,11 @@ public class UserController {
         return userRepository.findByFirstName(name);
     }
 
-    //All users’ initials
+    //returns a list with the initials of all the users
     @GetMapping("/initials")
     public List<String> getInitials() {
         List<User> users = (List<User>) userRepository.findAll();
-        return users.stream().map(user -> user.getFirstName().substring(0, 1) + user.getLastName().substring(0, 1)).collect(Collectors.toList());
+        return users.stream().map(UserService::getInitials).collect(Collectors.toList());
     }
 
     //Number of users that signed up with gmail
@@ -53,20 +53,25 @@ public class UserController {
 
     //List of each last name that any user has
     @GetMapping("/lastNames")
-    public void getLastNames() {
+    public List<String> getLastNames() {
         List<User> users = (List<User>) userRepository.findAll();
+        return users.stream().map(User::getLastName).collect(Collectors.toList());
     }
 
     //A string that contains every user’s first name initial
     @GetMapping("/everyInitial")
-    public List<String> getFirstNameInitials() {
+    public String getFirstNameInitials() {
         List<User> users = (List<User>) userRepository.findAll();
-        List<String> initials = new ArrayList<>();
-//        return users.stream().map(user -> user.getLastName().substring(0, 1)).collect(Collectors.joining(", ", "[", "]"));
-        for (User user : users) {
-           initials.add(userService.userInitials(user));
-        }
-        return initials;
+//        List<String> initials = new ArrayList<>();
+//        for (User user : users) {
+//           initials.add(userService.userInitials(user));
+//        }
+//        return initials;
+
+        return users.stream().map(user -> user.getLastName().substring(0, 1)).collect(Collectors.joining(", ", "[", "]"));
+
+
+
     }
 
     //The number of users whose first name contains an ‘a’
