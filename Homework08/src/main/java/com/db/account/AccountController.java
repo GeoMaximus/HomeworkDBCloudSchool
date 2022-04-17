@@ -2,6 +2,8 @@ package com.db.account;
 
 import com.db.config.exceptions.ExistingAccountException;
 import com.db.config.exceptions.InvalidUserException;
+import com.db.transferMoney.Transaction;
+import com.db.transferMoney.TransferMoneyService;
 import com.db.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,8 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/account")
@@ -23,6 +24,8 @@ public class AccountController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    TransferMoneyService transferMoneyServiceInternal;
 
     @PostMapping("/create")
     public ResponseEntity<Account> createAccount(@RequestBody Account account) throws InvalidUserException, ExistingAccountException {
@@ -35,5 +38,13 @@ public class AccountController {
             accountRepository.save(account);
             return new ResponseEntity<>(account, HttpStatus.CREATED);
         }
+    }
+
+    @PutMapping("/transfer")
+    public void transferMoney(@RequestParam int from, @RequestParam int to) {
+        Transaction transaction = new Transaction(accountRepository.findById(from).get(), accountRepository.findById(to).get(), 100);
+        transferMoneyServiceInternal.transferMoney(transaction);
+
+
     }
 }

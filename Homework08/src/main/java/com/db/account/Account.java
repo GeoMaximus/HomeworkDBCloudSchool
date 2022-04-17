@@ -17,6 +17,11 @@ public class Account {
     private int userId;
     private Currency currency;
     private String IBAN;
+    private double balance;
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 
     public void setIBAN(String IBAN) {
         this.IBAN = IBAN;
