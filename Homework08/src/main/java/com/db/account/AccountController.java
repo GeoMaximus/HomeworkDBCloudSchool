@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -40,11 +41,11 @@ public class AccountController {
         }
     }
 
-    @PutMapping("/transfer")
-    public void transferMoney(@RequestParam int from, @RequestParam int to) {
-        Transaction transaction = new Transaction(accountRepository.findById(from).get(), accountRepository.findById(to).get(), 100);
-        transferMoneyServiceInternal.transferMoney(transaction);
-
-
-    }
+//    @PutMapping("/transfer")
+//    public ResponseEntity<?> transfer(@RequestParam int from, @RequestParam int to) {
+//        Transaction transaction = new Transaction(accountRepository.findById(from).get(), accountRepository.findById(to).get(), 100);
+//        transferMoneyServiceInternal.transferMoney(transaction);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//
+//    }
 }
