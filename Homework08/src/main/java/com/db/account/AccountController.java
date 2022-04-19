@@ -25,8 +25,8 @@ public class AccountController {
 
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    TransferMoneyService transferMoneyServiceInternal;
+//    @Autowired
+//    TransferMoneyService transferMoneyServiceInternal;
 
     @PostMapping("/create")
     public ResponseEntity<Account> createAccount(@RequestBody Account account) throws InvalidUserException, ExistingAccountException {
