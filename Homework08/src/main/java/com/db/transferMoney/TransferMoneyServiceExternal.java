@@ -5,18 +5,10 @@ import com.db.account.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
-@Service("internal")
-public class TransferMoneyServiceInternal implements TransferMoneyService {
-
+@Service("external")
+public class TransferMoneyServiceExternal implements TransferMoneyService{
     @Autowired
     AccountRepository accountRepository;
-
-
-    //create a transfer table
-    //save all transfers in that table
-    //update with a query the accounts
     @Override
     public void transferMoney(String from, String destination, double amount) {
         Account fromAccount = accountRepository.findByIBAN(from);

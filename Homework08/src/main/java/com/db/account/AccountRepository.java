@@ -8,4 +8,6 @@ public interface AccountRepository extends CrudRepository<Account, Integer> {
     List<Account> findByUserId(int userId);
 
     boolean existsByIBAN(String iban);
+
+    Account findByIBAN(String iban);
 }

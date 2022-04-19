@@ -11,8 +11,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Transaction {
-    private Account fromAccount;
-    private Account destinationAccount;
+    private String fromIBAN;
+    private String destinationIBAN;
     private double transactionAmount;
 
 }

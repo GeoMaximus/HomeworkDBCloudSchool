@@ -6,6 +6,7 @@ import com.db.transferMoney.Transaction;
 import com.db.transferMoney.TransferMoneyService;
 import com.db.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,11 @@ public class AccountController {
     @Autowired
     UserRepository userRepository;
     @Autowired
+    @Qualifier("internal")
     TransferMoneyService transferMoneyServiceInternal;
+    @Autowired
+    @Qualifier("external")
+    TransferMoneyService transferMoneyServiceExternal;
 
     @PostMapping("/create")
     public ResponseEntity<Account> createAccount(@RequestBody Account account) throws InvalidUserException, ExistingAccountException {
@@ -41,16 +46,19 @@ public class AccountController {
         }
     }
 
-    @PutMapping("/transfer")
-    public void transferMoney(@RequestBody Transaction transaction) {
-        transferMoneyServiceInternal.transferMoney(transaction.getFromAccount(), transaction.getDestinationAccount(), transaction.getTransactionAmount());
-    }
+    @PostMapping("/transfer")
+    public ResponseEntity<?> transferMoney(@RequestBody Transaction transaction) {
+        String fromIban;
+        String destinationIban;
 
-//    @PutMapping("/transfer")
-//    public ResponseEntity<?> transfer(@RequestParam int from, @RequestParam int to) {
-//        Transaction transaction = new Transaction(accountRepository.findById(from).get(), accountRepository.findById(to).get(), 100);
-//        transferMoneyServiceInternal.transferMoney(transaction);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//
-//    }
+        if(transaction!=null && transaction.getFromIBAN() != null && transaction.getDestinationIBAN() != null) {
+            fromIban = transaction.getFromIBAN();
+            destinationIban = transaction.getDestinationIBAN();
+            transferMoneyServiceInternal.transferMoney(fromIban, destinationIban, transaction.getTransactionAmount());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            System.out.println("Transaction could not be processed");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
