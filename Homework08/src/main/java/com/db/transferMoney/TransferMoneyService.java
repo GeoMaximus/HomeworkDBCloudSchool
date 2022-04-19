@@ -5,5 +5,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface TransferMoneyService {
-    Transaction transferMoney(TransactionRequest transactionRequest);
+    void transferMoney(Account from, Account destination, double amount);
 }

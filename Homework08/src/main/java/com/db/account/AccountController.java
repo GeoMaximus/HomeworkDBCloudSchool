@@ -41,6 +41,11 @@ public class AccountController {
         }
     }
 
+    @PutMapping("/transfer")
+    public void transferMoney(@RequestBody Transaction transaction) {
+        transferMoneyServiceInternal.transferMoney(transaction.getFromAccount(), transaction.getDestinationAccount(), transaction.getTransactionAmount());
+    }
+
 //    @PutMapping("/transfer")
 //    public ResponseEntity<?> transfer(@RequestParam int from, @RequestParam int to) {
 //        Transaction transaction = new Transaction(accountRepository.findById(from).get(), accountRepository.findById(to).get(), 100);

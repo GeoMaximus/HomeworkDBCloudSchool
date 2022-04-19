@@ -18,18 +18,18 @@ public class TransferMoneyServiceInternal implements TransferMoneyService {
     //save all transfers in that table
     //update with a query the accounts
     @Override
-    public Transaction transferMoney(TransactionRequest transactionRequest) {
-        Optional<Account> fromAccount = accountRepository.findById(transactionRequest.getFromAccountId());
-        if (fromAccount.isEmpty()) {
-            return null;
+    public void transferMoney(Account from, Account destination, double amount) {
+        if (!accountRepository.existsByIBAN(from.getIBAN()) || !accountRepository.existsByIBAN(destination.getIBAN())) {
+            if (from.getBalance() > amount) {
+                from.setBalance(from.getBalance() - amount);
+                destination.setBalance(destination.getBalance() + amount);
+                accountRepository.save(from);
+                accountRepository.save(destination);
+            } else {
+                System.out.println("not enough credits");
+            }
+        } else {
+            System.out.println("the account does not exist");
         }
-        Optional<Account> destinationAccount = accountRepository.findById(transactionRequest.getDestinationAccountId());
-        if(destinationAccount.isEmpty()){
-            return null;
-        }
-        if(transactionRequest.getAmount() > )
-
-
-        return null;
     }
 }
