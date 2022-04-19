@@ -1,9 +1,9 @@
 package com.db.transferMoney;
 
-import com.db.account.Account;
+import com.db.config.exceptions.TransactionException;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface TransferMoneyService {
-    void transferMoney(String from, String destination, double amount);
+    void transferMoney(Transaction transaction) throws TransactionException;
 }

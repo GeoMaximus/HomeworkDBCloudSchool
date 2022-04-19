@@ -2,34 +2,29 @@ package com.db.transferMoney;
 
 import com.db.account.Account;
 import com.db.account.AccountRepository;
+import com.db.config.exceptions.TransactionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("external")
-public class TransferMoneyServiceExternal implements TransferMoneyService{
+public class TransferMoneyServiceExternal implements TransferMoneyService {
     @Autowired
     AccountRepository accountRepository;
+
     @Override
-    public void transferMoney(String from, String destination, double amount) {
-        Account fromAccount = accountRepository.findByIBAN(from);
-        Account destinationAccount = accountRepository.findByIBAN(destination);
-        double fromAccountFinalBalance;
-        double destinationAccountFinalBalance;
-
-        if (fromAccount != null && destinationAccount != null) {
-            if (fromAccount.getBalance() - amount >= 0) {
-                fromAccountFinalBalance = fromAccount.getBalance() - amount;
-                destinationAccountFinalBalance = destinationAccount.getBalance() + amount;
-
-                fromAccount.setBalance(fromAccountFinalBalance);
-                destinationAccount.setBalance(destinationAccountFinalBalance);
+    public void transferMoney(Transaction transaction) throws TransactionException {
+        if (accountRepository.existsByIBAN(transaction.getFromIBAN())) {
+            Account fromAccount = accountRepository.findByIBAN(transaction.getFromIBAN());
+            if (fromAccount.getBalance() >= transaction.getTransactionAmount()) {
+                double accountFinalBalance = fromAccount.getBalance() - transaction.getTransactionAmount();
+                fromAccount.setBalance(accountFinalBalance);
                 accountRepository.save(fromAccount);
-                accountRepository.save(destinationAccount);
             } else {
-                System.out.println("not enough credits");
+                throw new TransactionException("Not enough credits to process the transaction");
             }
         } else {
-            System.out.println("the account does not exist");
+            throw new TransactionException("The account does not exists");
         }
     }
 }
+

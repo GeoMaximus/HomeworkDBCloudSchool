@@ -6,8 +6,7 @@ import java.util.List;
 
 public interface AccountRepository extends CrudRepository<Account, Integer> {
     List<Account> findByUserId(int userId);
+    Account findByIBAN(String iban);
 
     boolean existsByIBAN(String iban);
-
-    Account findByIBAN(String iban);
 }
