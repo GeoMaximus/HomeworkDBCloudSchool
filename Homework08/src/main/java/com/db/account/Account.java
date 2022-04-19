@@ -1,6 +1,5 @@
 package com.db.account;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,11 +7,10 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "accounts")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "accounts")
 public class Account {
     @Id
     @GeneratedValue
@@ -24,10 +22,4 @@ public class Account {
     private String bankCode;
     private Currency currency;
     private double balance;
-
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
 }

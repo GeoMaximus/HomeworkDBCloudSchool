@@ -48,18 +48,18 @@ public class AccountController {
 
     @PostMapping("/transfer")
     public ResponseEntity<?> transferMoney(@RequestBody Transaction transaction) throws TransactionException {
-        if (accountRepository.existsByIBAN(transaction.getFromIBAN()) && accountRepository.existsByIBAN(transaction.getDestinationIBAN())) {
+        if (accountRepository.existsByIBAN(transaction.getFromIBAN())) {
             if (transaction.getFromIBAN().contains("DEUT") && transaction.getDestinationIBAN().contains("DEUT")) {
                 transferMoneyServiceInternal.transferMoney(transaction);
                 return new ResponseEntity<>(HttpStatus.OK);
-            } else if (transaction.getFromIBAN().contains("DEUT") && !transaction.getDestinationIBAN().contains("DEUT")) {
+            } else if (transaction.getFromIBAN().contains("DEUT") && !(transaction.getDestinationIBAN().contains("DEUT"))) {
                 transferMoneyServiceExternal.transferMoney(transaction);
                 return new ResponseEntity<>(HttpStatus.OK);
             } else {
-                System.out.println("Transaction could not be processed");
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("The source account is not internal", HttpStatus.BAD_REQUEST);
             }
+        } else {
+            return new ResponseEntity<>("Transaction could not be processed", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

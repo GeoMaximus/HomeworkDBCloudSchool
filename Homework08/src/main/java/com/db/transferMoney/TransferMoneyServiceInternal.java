@@ -17,13 +17,13 @@ public class TransferMoneyServiceInternal implements TransferMoneyService {
         if (accountRepository.existsByIBAN(transaction.getFromIBAN()) && accountRepository.existsByIBAN(transaction.getDestinationIBAN())) {
             Account fromAccount = accountRepository.findByIBAN(transaction.getFromIBAN());
             Account destinationAccount = accountRepository.findByIBAN(transaction.getDestinationIBAN());
-                if (fromAccount.getBalance() >= transaction.getTransactionAmount()) {
-                    updateBalance(transaction, fromAccount, destinationAccount);
-                    accountRepository.save(fromAccount);
-                    accountRepository.save(destinationAccount);
-                } else {
-                    throw new TransactionException("Not enough credits to process the transaction");
-                }
+            if (fromAccount.getBalance() >= transaction.getTransactionAmount()) {
+                updateBalance(transaction, fromAccount, destinationAccount);
+                accountRepository.save(fromAccount);
+                accountRepository.save(destinationAccount);
+            } else {
+                throw new TransactionException("Not enough credits to process the transaction");
+            }
         } else {
             throw new TransactionException("The account does not exists");
         }
