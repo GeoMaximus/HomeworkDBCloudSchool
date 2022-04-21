@@ -1,3 +1,4 @@
+
 package com.db.transferMoney;
 
 import com.db.account.Account;
@@ -36,3 +37,4 @@ public class TransferMoneyServiceInternal implements TransferMoneyService {
         destinationAccount.setBalance(destinationAccountFinalBalance);
     }
 }
+

@@ -26,6 +26,7 @@ public class AccountController {
 
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     @Qualifier("internal")
     TransferMoneyService transferMoneyServiceInternal;
