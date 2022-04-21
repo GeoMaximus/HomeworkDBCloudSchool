@@ -2,6 +2,7 @@ package com.db;
 
 import com.db.account.Account;
 import com.db.account.AccountRepository;
+import com.db.account.AccountService;
 import com.db.user.User;
 import com.db.user.UserRepository;
 import com.db.user.UserService;
@@ -14,7 +15,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,6 +27,8 @@ public class Homework08ApplicationTests {
     AccountRepository mockAccountRepository;
     @MockBean
     UserService userService;
+    @MockBean
+    AccountService accountService;
 
     @Test
     public void shouldGetFirstNameById() {
@@ -82,6 +84,58 @@ public class Homework08ApplicationTests {
         user.get().setLastName("Marian");
         assertFalse(userService.validateLastName(user.get().getLastName()));
     }
+
+    @Test
+    public void shouldValidateUserAge() {
+        Optional<User> user = Optional.of(new User());
+        user.get().setAge(25);
+        assertFalse(userService.validateAge(user.get().getAge()));
+    }
+
+    @Test
+    public void shouldValidateUserEmail() {
+        Optional<User> user = Optional.of(new User());
+        user.get().setEmail("@gmail");
+        assertFalse(userService.validateEmail(user.get().getEmail()));
+    }
+
+    @Test
+    public void shouldValidateUserPassword() {
+        Optional<User> user = Optional.of(new User());
+        user.get().setPassword("cevaparolalunga");
+        assertFalse(userService.validateEmail(user.get().getPassword()));
+    }
+
+    @Test
+    public void shouldValidateUser() {
+        Optional<User> user = Optional.of(new User());
+        user.get().setFirstName("Marian");
+        user.get().setLastName("Marian");
+        user.get().setAge(25);
+        user.get().setEmail("@gmail");
+        user.get().setPassword("cevaparolalunga");
+        assertFalse(userService.isUserValid(user.get()));
+    }
+
+    @Test
+    public void shouldCheckIfUserNameContainsA() {
+        Optional<User> user = Optional.of(new User());
+        user.get().setFirstName("Marian");
+        assertTrue(userService.checkUser(user.get()));
+    }
+
+//    @Test
+//    public void shouldGenerateIban() {
+//        Optional<Account> account = Optional.of(new Account());
+//        account.get().setIBAN("RO01DEUTEUR1234567");
+//        assertEquals("RO01DEUTEUR1234567", accountService.generateIBAN(account.get()));
+//    }
+
+
+
+
+
+
 
 
 
