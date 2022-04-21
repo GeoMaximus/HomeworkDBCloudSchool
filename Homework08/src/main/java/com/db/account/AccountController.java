@@ -2,17 +2,18 @@ package com.db.account;
 
 import com.db.config.exceptions.ExistingAccountException;
 import com.db.config.exceptions.InvalidUserException;
+import com.db.config.exceptions.TransactionException;
 import com.db.transferMoney.Transaction;
 import com.db.transferMoney.TransferMoneyService;
 import com.db.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/account")
@@ -25,14 +26,19 @@ public class AccountController {
 
     @Autowired
     UserRepository userRepository;
-//    @Autowired
-//    TransferMoneyService transferMoneyServiceInternal;
+
+    @Autowired
+    @Qualifier("internal")
+    TransferMoneyService transferMoneyServiceInternal;
+    @Autowired
+    @Qualifier("external")
+    TransferMoneyService transferMoneyServiceExternal;
 
     @PostMapping("/create")
     public ResponseEntity<Account> createAccount(@RequestBody Account account) throws InvalidUserException, ExistingAccountException {
         if (!userRepository.existsById(account.getUserId())) {
             throw new InvalidUserException("The user does not exist");
-        } else if (accountRepository.existsById(account.getId())) {
+        } else if (accountRepository.existsByIBAN(account.getIBAN())) {
             throw new ExistingAccountException("The account already exists");
         } else {
             account.setIBAN(accountService.generateIBAN(account));
@@ -41,11 +47,20 @@ public class AccountController {
         }
     }
 
-//    @PutMapping("/transfer")
-//    public ResponseEntity<?> transfer(@RequestParam int from, @RequestParam int to) {
-//        Transaction transaction = new Transaction(accountRepository.findById(from).get(), accountRepository.findById(to).get(), 100);
-//        transferMoneyServiceInternal.transferMoney(transaction);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//
-//    }
+    @PostMapping("/transfer")
+    public ResponseEntity<?> transferMoney(@RequestBody Transaction transaction) throws TransactionException {
+        if (accountRepository.existsByIBAN(transaction.getFromIBAN())) {
+            if (transaction.getFromIBAN().contains("DEUT") && transaction.getDestinationIBAN().contains("DEUT")) {
+                transferMoneyServiceInternal.transferMoney(transaction);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else if (transaction.getFromIBAN().contains("DEUT") && !(transaction.getDestinationIBAN().contains("DEUT"))) {
+                transferMoneyServiceExternal.transferMoney(transaction);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("The source account is not internal", HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            return new ResponseEntity<>("Transaction could not be processed", HttpStatus.BAD_REQUEST);
+        }
+    }
 }

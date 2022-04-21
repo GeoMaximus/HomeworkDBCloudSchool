@@ -1,35 +1,40 @@
-//package com.db.transferMoney;
-//
-//import com.db.account.Account;
-//import com.db.account.AccountRepository;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.Optional;
-//
-//@Service
-//public class TransferMoneyServiceInternal implements TransferMoneyService {
-//
-//    @Autowired
-//    AccountRepository accountRepository;
-//
-//
-//    //create a transfer table
-//    //save all transfers in that table
-//    //update with a query the accounts
-//    @Override
-//    public Transaction transferMoney(TransactionRequest transactionRequest) {
-//        Optional<Account> fromAccount = accountRepository.findById(transactionRequest.getFromAccountId());
-//        if (fromAccount.isEmpty()) {
-//            return null;
-//        }
-//        Optional<Account> destinationAccount = accountRepository.findById(transactionRequest.getDestinationAccountId());
-//        if(destinationAccount.isEmpty()){
-//            return null;
-//        }
-//        if(transactionRequest.getAmount() > )
-//
-//
-//        return null;
-//    }
-//}
+
+package com.db.transferMoney;
+
+import com.db.account.Account;
+import com.db.account.AccountRepository;
+import com.db.config.exceptions.TransactionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service("internal")
+public class TransferMoneyServiceInternal implements TransferMoneyService {
+
+    @Autowired
+    AccountRepository accountRepository;
+
+    @Override
+    public void transferMoney(Transaction transaction) throws TransactionException {
+        if (accountRepository.existsByIBAN(transaction.getFromIBAN()) && accountRepository.existsByIBAN(transaction.getDestinationIBAN())) {
+            Account fromAccount = accountRepository.findByIBAN(transaction.getFromIBAN());
+            Account destinationAccount = accountRepository.findByIBAN(transaction.getDestinationIBAN());
+            if (fromAccount.getBalance() >= transaction.getTransactionAmount()) {
+                updateBalance(transaction, fromAccount, destinationAccount);
+                accountRepository.save(fromAccount);
+                accountRepository.save(destinationAccount);
+            } else {
+                throw new TransactionException("Not enough credits to process the transaction");
+            }
+        } else {
+            throw new TransactionException("The account does not exists");
+        }
+    }
+
+    private void updateBalance(Transaction transaction, Account fromAccount, Account destinationAccount) {
+        double fromAccountFinalBalance = fromAccount.getBalance() - transaction.getTransactionAmount();
+        double destinationAccountFinalBalance = destinationAccount.getBalance() + transaction.getTransactionAmount();
+        fromAccount.setBalance(fromAccountFinalBalance);
+        destinationAccount.setBalance(destinationAccountFinalBalance);
+    }
+}
+
