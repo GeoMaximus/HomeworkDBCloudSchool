@@ -1,7 +1,0 @@
-Homework:
-
-Implement unit tests with as high % coverage as possible (JaCoCo, everything except data layer) of your previous
-homework assignment. Your submission will contain a link to the pull request that contains all the changes made for
-this assignment, in the repository that you worked in. Make sure that I have access to your repository before the
-deadline! Make sure any old commits (anything that isn’t this assignment) are merged to main and that the branch you
-worked on has an open pull request, but is not yet merged.

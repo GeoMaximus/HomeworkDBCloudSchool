@@ -28,9 +28,6 @@ public class UserController {
         if (!userService.isUserValid(user)) {
             throw new InvalidUserException("User details are not valid");
         }
-//        if (userRepository.existsByFirstname(user.getFirstName()) && userRepository.existByLastname(user.getLastName())) {
-//            throw new UserConflictException("Another user with the same name already exists");
-//        }
         userRepository.save(user);
     }
 
