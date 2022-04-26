@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TokenCreator {
-
     public String generateToken(String email) {
         return Jwts.builder().setSubject(email).compact();
     }

@@ -23,11 +23,13 @@ public class AuthenticationController {
 
     @PostMapping
     public ResponseEntity<?> createJWT(@RequestBody AuthenticationRequest authenticationRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest
+                .getUsername(),
                 authenticationRequest.getPassword()));
-
         User user = (User)authentication.getPrincipal();
         String JWT = tokenCreator.generateToken(user.getEmail());
-            return ResponseEntity.ok(new UserTokenState(JWT));
+        System.out.println(JWT);
+        return ResponseEntity.ok(new UserTokenState(JWT));
     }
 }
