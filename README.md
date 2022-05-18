@@ -1,10 +1,10 @@
 # Homework08
-Spring Boot Application
-Contains: - database connection
-          - endpoint mapping
-          - JWT authentication
-          - dealing with services
-Illustrates the use of: - @Service
-                        - @Repository
-                        - @Controller
-                        - etc.
+Spring Boot Application <br>
+Contains: - database connection <br>
+          - endpoint mapping <br>
+          - JWT authentication <br>
+          - dealing with services <br>
+Illustrates the use of: - @Service <br>
+                        - @Repository <br>
+                        - @Controller <br>
+                        - etc. <br>
